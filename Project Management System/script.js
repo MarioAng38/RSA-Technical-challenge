@@ -1,12 +1,19 @@
+import { validateTasks } from "./validate.js";
+
 const API_URL = "https://gist.githubusercontent.com/ai-cristea/95bf91857a4cbe138595ea6876c441f2/raw/date-jira.json";
 
 fetch(API_URL)
     .then(response => response.json())
     .then(data => {
+
+        if(!data || !Array.isArray(data.sprints)) {
+            throw new Error("Formatul datelor este invalid sau lipsesc sprints.");
+        }
+
+        const validatedSprints = validateTasks(data.sprints);
         const developerData = {};
 
-
-        data.sprints.forEach(sprint => {
+        validatedSprints.forEach(sprint => {
             sprint.tasks.forEach(task => {
                 const dev = task.assigned_to;
                 if (!developerData[dev]) {
@@ -67,7 +74,7 @@ fetch(API_URL)
         Highcharts.chart('efficiency-chart', {
             chart: { type: 'line' },
             title: { text: 'Eficienta (Estimated / Actual)' },
-            xAxis: { catergories: devs },
+            xAxis: { categories: devs },
             yAxis: { title: { text: 'Efficiency Ratio' }, min: 0 },
             series: [{
                 name: 'Eficienta',
