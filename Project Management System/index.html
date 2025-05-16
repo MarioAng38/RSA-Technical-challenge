@@ -11,10 +11,19 @@
 
 <body>
     <h1>Team Activity & Estimation Accuracy</h1>
+    <div id="loading-spinner" class="spinner"></div>
+    <div id=""error-message" class="error hidden">Eroare la incarcarea datelor.</div>
     <div id="capacity-chart" class="chart-box"></div>
     <div id="accuracy-chart" class="chart-box"></div>
     <div id="efficiency-chart" class="chart-box"></div>
+    <div id="kpis" class="kpi-container">
+        <p>Total taskuri: <span id="totalTasks">0</span></p>
+        <p>Eficienta medie: <span id="avgEfficiency">0</span></p>
+    </div>
     <script type="module" src="script.js"></script>
 </body>
-
+<footer>
+    <p>Proiect realizat de Mario Angelescu - <a href="https://github.com/MarioAng38/RSA-Technical-challenge">GitHub</a></p>
+  </footer>
+  
 </html>
