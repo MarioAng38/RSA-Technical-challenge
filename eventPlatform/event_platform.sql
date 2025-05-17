@@ -68,3 +68,22 @@ CREATE TABLE Feedback (
     FOREIGN KEY (session_id) REFERENCES Sessions(session_id),
     UNIQUE (user_id, session_id)
 );
+
+DELIMITER $$
+
+CREATE TRIGGER trg_check_feedback_registration
+BEFORE INSERT ON Feedback
+FOR EACH ROW
+BEGIN
+    DECLARE reg_count INT;
+
+    SELECT COUNT(*) INTO reg_count
+    FROM Registrations
+    WHERE user_id = NEW.user_id AND session_id = NEW.session_id;
+
+    IF reg_count = 0 THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Utilizatorul nu poate lasa feedback fara sa fie inregistrat in sesiune!';
+        END IF;
+    END $$
+
+DELIMITER ;
