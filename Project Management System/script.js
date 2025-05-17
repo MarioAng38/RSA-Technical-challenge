@@ -65,19 +65,32 @@ fetch(API_URL)
     ).toFixed(2);
 
     //Chart1: Capacity
+    const taskDistribution = devs.map((dev) => ({
+      name: dev,
+      y: developerData[dev].assigned,
+    }));
+
     Highcharts.chart("capacity-chart", {
-      chart: { type: "column" },
-      title: { text: "Developer Task Capacity" },
-      xAxis: { categories: devs },
-      yAxis: { min: 0, title: { text: "Numar taskuri" } },
+      chart: { type: "pie" },
+      title: { text: "Distributia Taskurilor pe Developer" },
+      tooltip: {
+        pointFormat: "<b>{point.percentage:.1f}%</b> ({point.y} taskuri)",
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+          dataLabels: {
+            enabled: true,
+            format: "<b>{point.name}</b>: {point.y} taskuri",
+          },
+        },
+      },
       series: [
         {
-          name: "Atribuite",
-          data: assignedData,
-        },
-        {
-          name: "Finalizate",
-          data: completedData,
+          name: "Taskuri",
+          colorByPoint: true,
+          data: taskDistribution,
         },
       ],
     });
