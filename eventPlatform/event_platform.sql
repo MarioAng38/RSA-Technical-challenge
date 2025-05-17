@@ -9,6 +9,7 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL,
     full_name VARCHAR(255),
     date_of_birth DATE,
+    role ENUM('Utilizator', 'Organizator') DEFAULT 'Utilizator',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -22,6 +23,14 @@ CREATE TABLE Events (
     location VARCHAR(255),
     created_by INT,
     FOREIGN KEY (created_by) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Organizers (
+    event_id INT,
+    user_id INT,
+    PRIMARY KEY (event_id, user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 -- Tabel Sessions
